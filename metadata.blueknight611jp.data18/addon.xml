@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="metadata.blueknight611jp.data18"
+       name="Data 18 Scraper"
+       version="0.0.1"
+       provider-name="blueknight611jp">
+  <requires>
+    <import addon="xbmc.metadata" version="1.0"/>
+  </requires>
+  <extension point="xbmc.metadata.scraper.movies"
+             library="data18.xml"/>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en">Data 18 Scraper</summary>
+    <description lang="en">Download XXX Web Content information from data18.com</description>
+    <disclaimer>Download metadata and thumbnail from data18.com</disclaimer>
+    <platform>all</platform>
+  </extension>
+</addon>

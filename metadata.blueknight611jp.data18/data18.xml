@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?><scraper framework="1.1" date="2014-02-15" name="Data18" content="movies" language="en">
+	<CreateSearchUrl clearbuffers="no" dest="3">
+			<RegExp input="$$1" output="&lt;url&gt;http://www.data18.com/search/?k=\1&amp;t=2&lt;/url&gt;" dest="3">
+			<expression noclean="1" />
+		</RegExp>
+	</CreateSearchUrl>
+	<NfoUrl dest="3">
+		<RegExp input="$$1" output="\1" dest="3">
+			<expression />
+		</RegExp>
+	</NfoUrl>
+    
+    <GetSearchResults clearbuffers="no" dest="8">
+       
+        <RegExp input="$$1" output="\1" dest="3">
+                <expression noclean="1">&lt;b&gt;[0-9]+ results&lt;/b&gt;(.*?)Back to Top</expression>
+        </RegExp>
+        
+        <!-- <a href="http://www.data18.com/movies/0058500/"><img src="http://img.data18.com/covers/1/4/6242_front.jpg" class="yborder" title="Seymore Butts' Butt Pirates Of the Caribbean" alt="Seymore Butts' Butt Pirates Of the Caribbean" /></a><br /><a href="http://www.data18.com/movies/0058500/">Seymore Butts' Butt Pirates Of the Caribbean</a>
+         -->
+         
+        <RegExp input="$$7" output="&lt;?xml version=&quot;1.0aaaa&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot;?&gt;&lt;results&gt;\1&lt;/results&gt;" dest="8">
+            <RegExp input="$$3" output="&lt;entity&gt;&lt;title&gt;\2&lt;/title&gt;&lt;url&gt;http://www.data18.com/movies/\1/&lt;/url&gt;&lt;url&gt;http://www.data18.com/movies/\1/pictures.html&lt;/url&gt;&lt;/entity&gt;" dest="7">
+                <expression repeat="yes" noclean="1">&lt;a href=&quot;http://www.data18.com/movies/([0-9]+)/&quot;&gt;(.*?)&lt;/a&gt;</expression>
+            </RegExp>
+            <expression noclean="1" />
+        </RegExp>
+    </GetSearchResults>
+    
+    <GetDetails clearbuffers="no" dest="9">
+        <RegExp input="$$4" output="&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot;?&gt;&lt;details&gt;\1&lt;/details&gt;" dest="9">
+          
+            <!-- title -->
+            <!-- <h1 class="h1big">Pirates</h1> -->
+            <RegExp input="$$1" output="&lt;title&gt;\1&lt;/title&gt;" dest="4+">
+                <expression noclean="1">&lt;h1 class=&quot;h1big&quot;&gt;(.*?)&lt;/h1&gt;</expression>
+            </RegExp>
+            <!-- runtime -->
+            <RegExp input="$$1" output="&lt;runtime&gt;\1&lt;/runtime&gt;" dest="4+">
+                <expression>Length:&lt;/b&gt;\s*(\d+)</expression>
+            </RegExp>
+        
+            <!-- thumb -->
+            <!-- <a href="http://www.data18.com/movies/0089171/covers.html"><img src="http://img.data18.com/covers/1/2_new/15446_front.jpg" alt="Enlarge Cover" title="Family Matters Covers" class="yborder" /></a> -->
+        
+            <!-- <a href="http://img.data18.com/covers/1/0/18585_front.jpg" data-lightbox="cover"><img src="http://img.data18.com/covers/1/2_new/18585_front.jpg" alt="Enlarge Cover"
+             title="Hot Anal Injection Covers" class="yborder" /></a>-->
+        
+            <RegExp input="$$1" output="&lt;thumb&gt;\1&lt;/thumb&gt;" dest="4+">
+                <expression noclean="1">&lt;img src=&quot;(http://img.data18.com/covers/.*?/.*?/[0-9]+_front\.jpg)&quot; alt=&quot;Enlarge Cover&quot;</expression>
+            </RegExp>
+        
+        
+            <!-- plot -->
+            <RegExp input="$$1" output="&lt;plot&gt;\1&lt;/plot&gt;" dest="4+">
+                <expression>Description:&lt;/b&gt;.&lt;p&gt;(.*?)&lt;/p&gt;</expression>
+            </RegExp>
+            
+            <!-- studio -->
+            <RegExp input="$$1" output="&lt;studio&gt;\1&lt;/studio&gt;" dest="4+">
+				<expression trim="1">&lt;b&gt;Studio:&lt;/b&gt; &lt;a href=&quot;http://www.data18.com/studios/.*?/&quot;&gt;(.*?)&lt;/a&gt;</expression>
+			</RegExp>
+			
+            <!-- year -->
+            <!-- Release Date: <b>September, 2005</b> -->
+            <RegExp input="$$1" output="&lt;year&gt;\1&lt;/year&gt;" dest="4+">
+                <expression>Release Date:.*?([0-9]{4})&lt;</expression>
+            </RegExp>
+            
+      
+            <!-- fanart -->
+            <!-- <div style="margin-bottom: 5px;"><img src="http://162.220.59.8/82/864/40814/02.jpg" alt="image1" /></div> -->
+            
+            <RegExp input="$$5" output="&lt;fanart&gt;\1&lt;/fanart&gt;" dest="4+">
+                <RegExp input="$$2" output="&lt;thumb&gt;http://\1/\2/\3/\4/\5.jpg&lt;/thumb&gt;" dest="5+">
+                <expression noclean="1" repeat="yes">&lt;div style=&quot;margin-bottom: 5px;&quot;&gt;&lt;img src=&quot;http://([0-9\.]+)/([0-9]+)/([0-9]+)/([0-9]+)/([0-9]+)\.jpg&quot; alt=&quot;image[0-9]&quot;</expression>
+                </RegExp>
+                <expression noclean="1"/>
+   			</RegExp>
+            
+            
+        <expression noclean="1"></expression>
+        </RegExp>
+    </GetDetails>
+
+</scraper>
